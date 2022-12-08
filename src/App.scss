@@ -1,0 +1,162 @@
+body {
+	background-color: #333;
+	color: #ccc;
+	font-family: sans-serif;
+	padding: 0 1rem;
+
+	h1 {
+		color: rgb(209, 168, 85);
+	}
+
+	nav {
+		background-color: #222;
+		padding: .5rem;
+
+		a {
+			color: #aaa;
+			text-decoration: none;
+			margin-right: 1rem;
+		}
+
+		a.active {
+			color: rgb(211, 211, 110);
+		}
+	}
+
+	.pageSkills {
+		.totaledSkill {
+			margin-bottom: 1rem;
+			width: 25rem;
+
+			.mainArea {
+				padding: .5rem;
+				cursor: pointer;
+			}
+
+			.openArea {
+				padding: .5rem;
+				.description {
+					a {
+						text-decoration: none;
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+		}
+
+		.found {
+			background-color: rgb(30, 67, 30);
+
+			.mainArea {
+				.total {
+					color: rgb(206, 206, 115);
+				}
+			}
+
+			.openArea {
+				background-color: rgb(21, 49, 21);
+				color: #888;
+
+				.description {
+					a {
+						color: rgb(78, 111, 62);
+						font-family: courier;
+					}
+				}
+			}
+
+		}
+
+		.missing {
+			background-color: rgb(86, 5, 5);
+			color: #777;
+			font-family: courier;
+
+			.mainArea {
+				.total {
+					color: #777;
+				}
+			}
+
+			.openArea {
+				background-color: rgb(56, 17, 17);
+				color: #666;
+
+				.description {
+					a {
+						color: rgb(121, 42, 38);
+					}
+				}
+			}
+		}
+	}
+
+	.pageDashboard {
+		a {
+			color: rgb(68, 186, 36);
+		}
+	}
+
+	.pageJobs {
+		.jobs {
+			.job {
+				background-color: #222;
+				padding: 1rem;
+				margin-bottom: 1rem;
+
+				div {
+					margin-bottom: .5rem;
+				}
+
+				.title {
+					a {
+						color: rgb(176, 146, 91);
+						font-size: 1.5rem;
+					}
+				}
+
+				.company {
+					color: rgb(208, 208, 114);
+				}
+
+				.description {
+					font-style: italic;
+					color: #999;
+				}
+
+				.skills {
+					.skill {
+						font-family: 'Courier New', Courier, monospace;
+					}
+
+					.found {
+						color: green;
+
+						a {
+							color: rgb(114, 208, 114);
+						}
+					}
+
+					.missing {
+						color: red;
+
+						a {
+							color: rgb(210, 77, 77);
+						}
+					}
+				}
+
+				.todo {
+					color: yellow;
+					background-color: #111;
+					padding: .4rem;
+					font-family: 'Courier New', Courier, monospace;
+					display: inline-block;
+					border-radius: .4rem;
+				}
+			}
+		}
+	}
+}
