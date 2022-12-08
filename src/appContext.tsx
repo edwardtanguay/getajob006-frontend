@@ -23,38 +23,48 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [totaledSkills, setTotaledSkills] = useState<TotaledSkill[]>([]);
 
-	useEffect(() => {
-		(async () => {
-			setJobs((await axios.get(`${backendUrl}/jobs`)).data);
-		})();
-	}, []);
-
-	useEffect(() => {
+	const loadJobs = async () => {
+		setJobs((await axios.get(`${backendUrl}/jobs`)).data);
+	};
+	const loadTodos = async () => {
 		(async () => {
 			const _todos = (await axios.get(`${backendUrl}/todos`)).data;
 			_todos.sort((a: Todo, b: Todo) => a.todoText > b.todoText);
 			setTodos(_todos);
 		})();
-	}, []);
+	};
+	const loadTotaledSkills = async () => {
+		const _totaledSkills: TotaledSkill[] = (
+			await axios.get(`${backendUrl}/totaledSkills`)
+		).data;
+		_totaledSkills.sort(
+			(a: TotaledSkill, b: TotaledSkill) =>
+				Number(b.total) - Number(a.total)
+		);
+		_totaledSkills.forEach((_totaledSkill) => {
+			_totaledSkill.isOpen = false;
+			if (_totaledSkill.skill.name) {
+				_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.name}`;
+			} else {
+				_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.idCode}`;
+			}
+		});
+		setTotaledSkills(_totaledSkills);
+	};
 
 	useEffect(() => {
 		(async () => {
-			const _totaledSkills: TotaledSkill[] = (
-				await axios.get(`${backendUrl}/totaledSkills`)
-			).data;
-			_totaledSkills.sort(
-				(a: TotaledSkill, b: TotaledSkill) =>
-					Number(b.total) - Number(a.total)
-			);
-			_totaledSkills.forEach((_totaledSkill) => {
-				_totaledSkill.isOpen = false;
-				if (_totaledSkill.skill.name) {
-					_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.name}`;
-				} else {
-					_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.idCode}`;
-				}
-			});
-			setTotaledSkills(_totaledSkills);
+			await loadJobs();
+		})();
+	}, []);
+	useEffect(() => {
+		(async () => {
+			await loadTodos();
+		})();
+	}, []);
+	useEffect(() => {
+		(async () => {
+			await loadTotaledSkills();
 		})();
 	}, []);
 
@@ -63,24 +73,25 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		setTotaledSkills([...totaledSkills]);
 	};
 
-    const handleDeleteJob = async (job: Job) => {
-        try {
-            const res = await axios.delete(`${backendUrl}/jobs/${job.id}`);
-            if (res.status = 200) {
-                const _jobs = jobs.filter((m: Job) => m.id !== job.id);
-                setJobs([..._jobs]);
-            } else {
-                console.log(res)
-            }
-        } catch (e: any) {
-            console.error(`ERROR: ${e.message}`);
-            const message = e.response.data.message;
-            if (message) {
-                console.error(`ERROR: ${message}`);
-            }
-        }
+	const handleDeleteJob = async (job: Job) => {
+		try {
+			const res = await axios.delete(`${backendUrl}/jobs/${job.id}`);
+			if ((res.status = 200)) {
+				await loadJobs();
+				await loadTodos();
+				await loadTotaledSkills();
+			} else {
+				console.log(res);
+			}
+		} catch (e: any) {
+			console.error(`ERROR: ${e.message}`);
+			const message = e.response.data.message;
+			if (message) {
+				console.error(`ERROR: ${message}`);
+			}
+		}
 	};
-	
+
 	return (
 		<AppContext.Provider
 			value={{
