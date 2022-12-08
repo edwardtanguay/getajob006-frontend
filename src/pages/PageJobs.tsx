@@ -3,7 +3,7 @@ import { AppContext } from '../appContext';
 import { Job, Skill } from '../types';
 
 export const PageJobs = () => {
-	const { jobs } = useContext(AppContext);
+	const { jobs, handleDeleteJob } = useContext(AppContext);
 
 	return (
 		<div className="page pageJobs">
@@ -21,26 +21,43 @@ export const PageJobs = () => {
 							<div className="todo">NEXT TASK: {job.todo}</div>
 							<div className="description">{job.description}</div>
 							<div className="skills">
-								{job.skills.map((skill: Skill) => {
+								{job.skills.map((skill: Skill, i: number) => {
 									return (
-										<>
+										<div key={i}>
 											{skill.name ? (
 												<div className="skill found">
 													<div className="name">
-														<a href={skill.url} target="_blank">{skill.name}</a> - {skill.description}
+														<a
+															href={skill.url}
+															target="_blank"
+														>
+															{skill.name}
+														</a>{' '}
+														- {skill.description}
 													</div>
 												</div>
 											) : (
 												<div className="skill missing">
 													<div className="name">
-														
-														<a href={`https://www.google.com/search?q=${skill.idCode}+web+development`} target="_blank">{skill.idCode}</a> - ADD TO BACKEND: \src\data\skillInfos.json
+														<a
+															href={`https://www.google.com/search?q=${skill.idCode}+web+development`}
+															target="_blank"
+														>
+															{skill.idCode}
+														</a>{' '}
+														- ADD TO BACKEND:
+														\src\data\skillInfos.json
 													</div>
 												</div>
 											)}
-										</>
+										</div>
 									);
 								})}
+							</div>
+							<div className="managePanel">
+								<button onClick={() => handleDeleteJob(job)}>
+									Delete
+								</button>
 							</div>
 						</div>
 					);

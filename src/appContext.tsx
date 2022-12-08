@@ -8,6 +8,7 @@ interface IAppContext {
 	todos: Todo[];
 	totaledSkills: TotaledSkill[];
 	handleToggleTotaledSkill: (totaledSkill: TotaledSkill) => void;
+	handleDeleteJob: (job: Job) => void;
 }
 
 interface IAppProvider {
@@ -61,6 +62,25 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 		totaledSkill.isOpen = !totaledSkill.isOpen;
 		setTotaledSkills([...totaledSkills]);
 	};
+
+    const handleDeleteJob = async (job: Job) => {
+        try {
+            const res = await axios.delete(`${backendUrl}/jobs/${job.id}`);
+            if (res.status = 200) {
+                const _jobs = jobs.filter((m: Job) => m.id !== job.id);
+                setJobs([..._jobs]);
+            } else {
+                console.log(res)
+            }
+        } catch (e: any) {
+            console.error(`ERROR: ${e.message}`);
+            const message = e.response.data.message;
+            if (message) {
+                console.error(`ERROR: ${message}`);
+            }
+        }
+	};
+	
 	return (
 		<AppContext.Provider
 			value={{
@@ -68,6 +88,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 				todos,
 				totaledSkills,
 				handleToggleTotaledSkill,
+				handleDeleteJob,
 			}}
 		>
 			{children}

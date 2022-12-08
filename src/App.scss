@@ -35,9 +35,11 @@ body {
 
 			.openArea {
 				padding: .5rem;
+
 				.description {
 					a {
 						text-decoration: none;
+
 						&:hover {
 							text-decoration: underline;
 						}
@@ -108,6 +110,23 @@ body {
 
 				div {
 					margin-bottom: .5rem;
+				}
+
+				.managePanel {
+					display: flex;
+					justify-content: flex-end;
+
+					button {
+						background-color: #555;
+						border: 0;
+						cursor: pointer;
+						font-size: 1.2rem;
+						border-radius: .3rem;
+
+						&:hover {
+							background-color: rgb(152, 64, 46);
+						}
+					}
 				}
 
 				.title {

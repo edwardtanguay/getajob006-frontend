@@ -5,3 +5,6 @@
 
 ### jobs
 {{url}}/jobs
+
+### delete a job
+DELETE {{url}}/jobs/3 
