@@ -1,30 +1,30 @@
-export type Job = {
+export interface IJob { 
 	id: number;
 	title: string;
 	company: string;
 	url: string;
 	description: string;
 	skillList: string;
-	skills: Skill[];
+	skills: ISkill[];
 	todo: string;
 }
 
-export type Skill = {
+export interface ISkill {
 	idCode: string;
 	name: string;
 	url: string;
 	description: string;
 }
 
-export type Todo = {
+export interface ITodo {
 	todoText: string;
 	company: string;
 	title: string;
 	url: string;
 }
 
-export type SkillTotal = {
-	skill: Skill;
+export interface ISkillTotal {
+	skill: ISkill;
 	total: number;
 	isOpen: boolean;
 	lookupInfoLink: string;

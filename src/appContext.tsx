@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
-import { Job, Todo, SkillTotal } from './types';
+import { Job, Todo, SkillTotal } from './interfaces';
 
 interface IAppContext {
 	jobs: Job[];
