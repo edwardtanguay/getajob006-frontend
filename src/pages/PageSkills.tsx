@@ -2,53 +2,60 @@ import { useContext } from 'react';
 import { AppContext } from '../appContext';
 
 export const PageSkills = () => {
-	const { totaledSkills, handleToggleTotaledSkill } = useContext(AppContext);
+	const {
+		skillTotals,
+		handleToggleSkillTotal
+	} = useContext(AppContext);
 	return (
 		<div className="page pageSkills">
 			<h2>Skills</h2>
-			<div className="totaledSkills">
-				{totaledSkills.map((totaledSkill, i) => {
+			<div className="skillTotals">
+				{skillTotals.map((skillTotal, i) => {
 					return (
-						<div key={i}
-							className={`totaledSkill ${
-								totaledSkill.skill.name ? 'found' : 'missing'
+						<div
+							key={i}
+							className={`skillTotal ${
+								skillTotal.skill.name ? 'found' : 'missing'
 							}`}
 						>
-							<div className="mainArea" onClick={() => handleToggleTotaledSkill(totaledSkill)}>
+							<div
+								className="mainArea"
+								onClick={() =>
+									handleToggleSkillTotal(skillTotal)
+								}
+							>
 								<span className="total">
-									{totaledSkill.total}x
+									{skillTotal.total}x
 								</span>{' '}
-								{totaledSkill.skill.name ? (
+								{skillTotal.skill.name ? (
 									<span className="name">
-										{totaledSkill.skill.name}
+										{skillTotal.skill.name}
 									</span>
 								) : (
 									<span className="name">
-										{totaledSkill.skill.idCode}
+										{skillTotal.skill.idCode}
 									</span>
 								)}
 							</div>
-							{totaledSkill.isOpen && (
+							{skillTotal.isOpen && (
 								<div className="openArea">
-									{totaledSkill.skill.name ? (
+									{skillTotal.skill.name ? (
 										<div className="description">
-											{totaledSkill.skill.description}{' '}
-												<a
-													href={
-														totaledSkill.skill.url
-													}
-													target="_blank"
-												>
-													info
-												</a>{' '}
-												<a
-													href={
-														totaledSkill.lookupInfoLink
-													}
-													target="_blank"
-												>
-													lookup
-												</a>
+											{skillTotal.skill.description}{' '}
+											<a
+												href={skillTotal.skill.url}
+												target="_blank"
+											>
+												info
+											</a>{' '}
+											<a
+												href={
+													skillTotal.lookupInfoLink
+												}
+												target="_blank"
+											>
+												lookup
+											</a>
 										</div>
 									) : (
 										<div className="description">
@@ -58,7 +65,7 @@ export const PageSkills = () => {
 											<br />
 											<a
 												href={
-													totaledSkill.lookupInfoLink
+													skillTotal.lookupInfoLink
 												}
 												target="_blank"
 											>

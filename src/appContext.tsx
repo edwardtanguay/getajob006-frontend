@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 import axios from 'axios';
-import { Job, Todo, TotaledSkill } from './types';
+import { Job, Todo, SkillTotal } from './types';
 
 interface IAppContext {
 	jobs: Job[];
 	todos: Todo[];
-	totaledSkills: TotaledSkill[];
-	handleToggleTotaledSkill: (totaledSkill: TotaledSkill) => void;
+	skillTotals: SkillTotal[];
+	handleToggleSkillTotal: (skillTotal: SkillTotal) => void;
 	handleDeleteJob: (job: Job) => void;
 }
 
@@ -21,7 +21,7 @@ export const AppContext = createContext<IAppContext>({} as IAppContext);
 export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 	const [jobs, setJobs] = useState<Job[]>([]);
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [totaledSkills, setTotaledSkills] = useState<TotaledSkill[]>([]);
+	const [skillTotals, setSkillTotals] = useState<SkillTotal[]>([]);
 
 	const loadJobs = async () => {
 		setJobs((await axios.get(`${backendUrl}/jobs`)).data);
@@ -33,23 +33,22 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 			setTodos(_todos);
 		})();
 	};
-	const loadTotaledSkills = async () => {
-		const _totaledSkills: TotaledSkill[] = (
-			await axios.get(`${backendUrl}/totaledSkills`)
+	const loadSkillTotals = async () => {
+		const _skillTotals: SkillTotal[] = (
+			await axios.get(`${backendUrl}/skillTotals`)
 		).data;
-		_totaledSkills.sort(
-			(a: TotaledSkill, b: TotaledSkill) =>
-				Number(b.total) - Number(a.total)
+		_skillTotals.sort(
+			(a: SkillTotal, b: SkillTotal) => Number(b.total) - Number(a.total)
 		);
-		_totaledSkills.forEach((_totaledSkill) => {
-			_totaledSkill.isOpen = false;
-			if (_totaledSkill.skill.name) {
-				_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.name}`;
+		_skillTotals.forEach((_skillTotal) => {
+			_skillTotal.isOpen = false;
+			if (_skillTotal.skill.name) {
+				_skillTotal.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_skillTotal.skill.name}`;
 			} else {
-				_totaledSkill.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_totaledSkill.skill.idCode}`;
+				_skillTotal.lookupInfoLink = `https://www.google.com/search?client=firefox-b-d&q=web+development+${_skillTotal.skill.idCode}`;
 			}
 		});
-		setTotaledSkills(_totaledSkills);
+		setSkillTotals(_skillTotals);
 	};
 
 	useEffect(() => {
@@ -64,13 +63,13 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 	}, []);
 	useEffect(() => {
 		(async () => {
-			await loadTotaledSkills();
+			await loadSkillTotals();
 		})();
 	}, []);
 
-	const handleToggleTotaledSkill = (totaledSkill: TotaledSkill) => {
-		totaledSkill.isOpen = !totaledSkill.isOpen;
-		setTotaledSkills([...totaledSkills]);
+	const handleToggleSkillTotal = (skillTotal: SkillTotal) => {
+		skillTotal.isOpen = !skillTotal.isOpen;
+		setSkillTotals([...skillTotals]);
 	};
 
 	const handleDeleteJob = async (job: Job) => {
@@ -79,7 +78,7 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 			if ((res.status = 200)) {
 				await loadJobs();
 				await loadTodos();
-				await loadTotaledSkills();
+				await loadSkillTotals();
 			} else {
 				console.log(res);
 			}
@@ -97,8 +96,8 @@ export const AppProvider: React.FC<IAppProvider> = ({ children }) => {
 			value={{
 				jobs,
 				todos,
-				totaledSkills,
-				handleToggleTotaledSkill,
+				skillTotals: skillTotals,
+				handleToggleSkillTotal: handleToggleSkillTotal,
 				handleDeleteJob,
 			}}
 		>
